@@ -1,0 +1,7 @@
+.DS_Store
+.rspec
+.rvmrc
+/.bundle
+/coverage/
+/spec/tmp/*
+**.orig
