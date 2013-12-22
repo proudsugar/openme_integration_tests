@@ -56,5 +56,4 @@ DEPENDENCIES
   capybara
   cucumber
   poltergeist (~> 1.5.0)
-  rspec-expectations (~> 2.14.4)
   site_prism (~> 2.5)
