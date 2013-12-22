@@ -16,7 +16,7 @@ end
 
 Capybara.configure do |config|
   config.default_driver = ENV['CAPYBARA_DRIVER'] || :poltergeist
-  config.app_host = 'http://dev.openme.com'
+  config.app_host = 'http://openme.com'
   config.default_wait_time = 5
   config.run_server = false
 end
