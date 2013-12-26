@@ -19,21 +19,22 @@ Snooper.prototype.setup = function() {
   }
 
   var loaded = function(mixpanel) {
+    // Snoop on this context for async mixpanel tracking
     this.sinonize(mixpanel);
     this._loaded = true;
-  }.bind(this);
+  }.bind(this)
 
 
-  if (!window.mixpanel.__loaded) {
+  if (window.mixpanel.__loaded) {
+    loaded(window.mixpanel);
+  } else {
     // Snoop on this context for sync mixpanel tracking
     this.sinonize(window.__mixpanel);
-    // Snoop on this context for async mixpanel tracking
-    window.mixpanel.set_config({
-      loaded: loaded
-    });
-  } else {
-    loaded(window.mixpanel);
   }
+
+  window.mixpanel.set_config({
+    loaded: loaded
+  });
 };
 
 Snooper.prototype.sinonize = function(ctx) {

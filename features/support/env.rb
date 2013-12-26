@@ -45,4 +45,8 @@ Before do
   end
 end
 
+After do
+  page.reset_session!
+end
+
 World(Capybara)

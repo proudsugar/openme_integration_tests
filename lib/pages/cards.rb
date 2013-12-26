@@ -3,7 +3,8 @@
 # Author Luis Merino <luis@proudsugar.com>
 #
 
-class Cards < SitePrism::Page
+require 'pages/base'
+
+class Cards < Base
   set_url '/cards'
 end
-

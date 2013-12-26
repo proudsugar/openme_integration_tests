@@ -17,10 +17,10 @@ When /^I choose to "browse-cards" clicking on the button$/ do
 end
 
 Then /^I should get that event "([^"]*)" yields properties$/ do |event_name|
-  actual = page.evaluate_script('mixpanel.track.getCall(0).args[0]')
+  actual = page.evaluate_script('mixpanel.track.getCall(1).args[0]')
   expect(actual).to eq(event_name)
 
   expected = {'on-page' => @home.url}
-  actual = page.evaluate_script('mixpanel.track.getCall(0).args[1]')
+  actual = page.evaluate_script('mixpanel.track.getCall(1).args[1]')
   expect(actual).to eq(expected)
 end
