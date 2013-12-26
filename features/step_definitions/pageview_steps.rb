@@ -3,17 +3,17 @@
 # Author Luis Merino <luis@proudsugar.com>
 #
 
-require 'pages/home'
+require 'pages/cards'
 
-Given /^I arrive to the page$/ do
-  @home = Home.new
+Given /^I arrive to any given page$/ do
+  @home = Cards.new
   @home.load
+  wait_for_mixpanel
 end
 
 Then /^I should get that track_pageview has been called one time$/ do
-  @home.should have_intro
-  call_count = page.evaluate_script('mixpanel.track_pageview.callCount')
-  expect(call_count).to equal(1)
+  called = page.evaluate_script('mixpanel.track_pageview.called')
+  expect(called).to be_true
 end
 
 Then /^I should get that event "([^"]*)" has been called one time$/ do |event_name|
@@ -27,6 +27,6 @@ end
 And /^I should get that page-view yields properties:$/ do |table|
   expected = table.hashes().first
   expected['on-page'] = @home.current_url
-  actual   = page.evaluate_script('__mixpanel.track.getCall(0).args[1]')
+  actual = page.evaluate_script('__mixpanel.track.getCall(0).args[1]')
   expect(actual).to eq(expected)
 end

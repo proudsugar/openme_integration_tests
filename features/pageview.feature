@@ -8,8 +8,8 @@ Feature: Pageview
   As a headless browser with Mixpanel
   I need to verify that tracking is in place
 
-  Scenario: Browsing to Home page
-    Given I arrive to the page
+  Scenario: Browsing to a given page
+    Given I arrive to any given page
     Then I should get that track_pageview has been called one time
     Then I should get that event "page-view" has been called one time
     And I should get that page-view yields properties:
