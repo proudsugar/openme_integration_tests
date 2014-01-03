@@ -22,8 +22,8 @@ namespace :cucumber do
     task_name = File.basename(feature_path).gsub(/\.feature/, '')
     $tasks << "cucumber:#{task_name}"
     Cucumber::Rake::Task.new(task_name.to_sym) do |task|
-      task.cucumber_opts = "--format html --out=#{ENV['CIRCLE_ARTIFACTS']}/#{task_name}.html"
-      task.cucumber_opts << feature_path
+      #task.cucumber_opts = "--format html --out=#{ENV['CIRCLE_ARTIFACTS']}/#{task_name}.html"
+      task.cucumber_opts = feature_path
     end
   end
 end
