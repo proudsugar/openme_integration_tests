@@ -1,4 +1,4 @@
-module AjaxHelpers
+module MixpanelHelpers
   def wait_for_mixpanel
     Timeout.timeout(Capybara.default_wait_time) do
       loop do
@@ -9,4 +9,4 @@ module AjaxHelpers
   end
 end
 
-World(AjaxHelpers)
+World(MixpanelHelpers)

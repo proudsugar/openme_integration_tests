@@ -25,7 +25,7 @@ Capybara.register_driver :poltergeist do |app|
   require 'capybara/poltergeist'
   Capybara::Poltergeist::Driver.new(app, {
     #:js_errors => false,
-    :inspector => true,
+    #:inspector => true,
     :phantomjs_options => ['--load-images=no', '--ignore-ssl-errors=yes'],
     :extensions => ['vendor/bind.js', 'vendor/sinon-1.7.3.js', 'vendor/snooper.js']
     #:extensions => ['//cdnjs.cloudflare.com/ajax/libs/sinon.js/1.7.3/sinon-min.js', '//gist.github.com/Rendez/58d20457a89f90631ebb/raw/dde83fd81afd7607d3315269e8a46c653208c202/snooper.js']

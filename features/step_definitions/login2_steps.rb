@@ -25,11 +25,11 @@ Then /^I click on "Sign in with Facebook" in the popup$/ do
 end
 
 And /^I should get that second event "([^"]*)" yields properties:$/ do |event_name, table|
-  actual = page.evaluate_script('mixpanel.track.getCall(0).args[0]')
+  actual = page.evaluate_script("mixpanel.track.lastCall.args[0]")
   expect(actual).to eq(event_name)
 
   expected = table.hashes().first
   expected['on-page'] = @preview_card.current_path
-  actual = page.evaluate_script('mixpanel.track.getCall(0).args[1]')
+  actual = page.evaluate_script("mixpanel.track.lastCall.args[1]")
   expect(actual).to eq(expected)
 end

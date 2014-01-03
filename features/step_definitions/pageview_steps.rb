@@ -20,13 +20,13 @@ Then /^I should get that event "([^"]*)" has been called one time$/ do |event_na
   call_count = page.evaluate_script('__mixpanel.track.callCount')
   expect(call_count).to equal(1)
 
-  event = page.evaluate_script('__mixpanel.track.getCall(0).args[0]')
+  event = page.evaluate_script('__mixpanel.track.lastCall.args[0]')
   expect(event).to eq(event_name)
 end
 
 And /^I should get that page-view yields properties:$/ do |table|
   expected = table.hashes().first
   expected['on-page'] = @home.current_url
-  actual = page.evaluate_script('__mixpanel.track.getCall(0).args[1]')
+  actual = page.evaluate_script('__mixpanel.track.lastCall.args[1]')
   expect(actual).to eq(expected)
 end
