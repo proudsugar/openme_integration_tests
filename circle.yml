@@ -1,3 +1,4 @@
 test:
   override:
-    - bundle exec cucumber features/pageview.feature features/*
+    #- alias cucumber='bundle exec cucumber'
+    - rake

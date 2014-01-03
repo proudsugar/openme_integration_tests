@@ -4,9 +4,9 @@
 //
 
 function Snooper() {
-  // used to keep tab on the sync (push-array) mixpanel methods
+  // used to keep tab on the sync (push-array) mixpanel fakes'
   window.__mixpanel = {};
-  // fakes
+  // fake methods lists
   this.stubs = 'track alias name_tag people.set people.set_once people.increment people.append people.track_charge people.clear_charges people.delete_user'.split(' ');
   this.spies = 'track_links track_forms register register_once unregister identify set_config'.split(' ');
 }
@@ -18,51 +18,46 @@ Snooper.prototype.setup = function() {
     this.sandbox = sinon.sandbox.create();
   }
 
+  // Snoop on this context for async mixpanel tracking
   var loaded = function(mixpanel) {
-    // Snoop on this context for async mixpanel tracking
     this.sinonize(mixpanel);
-    this._loaded = true;
   }.bind(this)
 
-
-  if (window.mixpanel.__loaded) {
-    loaded(window.mixpanel);
-  } else {
-    // Snoop on this context for sync mixpanel tracking
-    this.sinonize(window.__mixpanel);
-  }
+  // Snoop on this context for sync mixpanel tracking
+  this.sinonize(window.__mixpanel);
 
   window.mixpanel.set_config({
     loaded: loaded
   });
 };
 
-Snooper.prototype.sinonize = function(ctx) {
+Snooper.prototype.sinonize = function(scope) {
   var len = 'people.'.length;
   var sandbox = this.sandbox;
 
   // very often, track_pageview is called internally because is default behavior,
   // thus we have to stub it in advance to make sure it doesn't slide
-  if (ctx.ua) {
+  if (scope.ua) {
     // minified version method is 'ua' and we don't want to miss it
-    ctx.track_pageview = ctx.ua = sandbox.stub(window.mixpanel, 'track_pageview');
+    scope.track_pageview = scope.ua = sandbox.stub(window.mixpanel, 'track_pageview');
   } else {
-    ctx.track_pageview = sandbox.stub(window.mixpanel, 'track_pageview');
+    scope.track_pageview = sandbox.stub(window.mixpanel, 'track_pageview');
   }
 
   this.stubs.forEach(function(key) {
     if (key.indexOf('people') != -1) {
-      ctx[key] = sandbox.stub(window.mixpanel.people, key.substr(len));
+      scope[key] = sandbox.stub(window.mixpanel.people, key.substr(len));
     } else {
-      ctx[key] = sandbox.stub(window.mixpanel, key);
+      scope[key] = sandbox.stub(window.mixpanel, key);
     }
   });
 
   this.spies.forEach(function(key) {
-    ctx[key] = sandbox.spy(window.mixpanel, key);
+    scope[key] = sandbox.spy(window.mixpanel, key);
   });
 };
 
 
 var snooper = new Snooper();
 document.addEventListener('DOMContentLoaded', snooper.setup.bind(snooper));
+

@@ -14,10 +14,3 @@ Feature: Login
     Then I should get that first event "login-click" yields properties:
       | trigger |
       | header  |
-  Scenario: LoginBeforeSendCard
-    Given I am on the preview a card page
-    When I click on "Preview and Send" in the sidebar
-    Then I click on "Sign in with Facebook" in the popup
-    And I should get that second event "login-click" yields properties:
-      | trigger |
-      | pop-up  |

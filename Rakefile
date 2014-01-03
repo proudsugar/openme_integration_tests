@@ -3,11 +3,30 @@
 # Author Luis Merino <luis@proudsugar.com>
 #
 
+ENV['CIRCLE_ARTIFACTS'] ||= File.expand_path("./metrics")
+
+FEATURE_FILES = Dir.glob(Dir.pwd + "/features/*.feature")
+
+require 'bundler'
+Bundler.setup(:test)
+#require 'rubygems'
 require 'cucumber'
 require 'cucumber/rake/task'
 
 task default: :features
 
-Cucumber::Rake::Task.new(:features) do |t|
-  t.cucumber_opts = "--format pretty" # Any valid command line option can go here.
+$tasks = []
+
+namespace :cucumber do
+  FEATURE_FILES.each do |feature_path|
+    task_name = File.basename(feature_path).gsub(/\.feature/, '')
+    $tasks << "cucumber:#{task_name}"
+    Cucumber::Rake::Task.new(task_name.to_sym) do |task|
+      task.cucumber_opts = "--format pretty --out=#{ENV['CIRCLE_ARTIFACTS']}/#{task_name}.txt --format html --out=#{ENV['CIRCLE_ARTIFACTS']}/#{task_name}.html"
+      task.cucumber_opts << feature_path
+    end
+  end
 end
+
+FileUtils.mkdir_p("#{ENV['CIRCLE_ARTIFACTS']}")
+task :features => $tasks

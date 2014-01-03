@@ -5,22 +5,24 @@
 
 require 'pages/home'
 
-Given /^I arrive to the home page$/ do
+Given /^I am on the home page$/ do
   @home = Home.new
   @home.load
   wait_for_mixpanel
 end
 
-When /^I choose to "browse-cards" clicking on the button$/ do
-  @home.should have_intro
-  @home.intro.browse_cards.click
+When /^I click on "Sign in with Facebook" at the top$/ do
+  @home.should have_top_nav
+  @home.top_nav.should have_sign_in
+  @home.top_nav.sign_in.click
 end
 
-Then /^I should get that event "([^"]*)" yields properties$/ do |event_name|
+Then /^I should get that first event "([^"]*)" yields properties:$/ do |event_name, table|
   actual = page.evaluate_script('mixpanel.track.getCall(0).args[0]')
   expect(actual).to eq(event_name)
 
-  expected = {'on-page' => @home.url}
+  expected = table.hashes().first
+  expected['on-page'] = @home.url
   actual = page.evaluate_script('mixpanel.track.getCall(0).args[1]')
   expect(actual).to eq(expected)
 end
