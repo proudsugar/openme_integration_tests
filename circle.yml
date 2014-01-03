@@ -1,4 +1,3 @@
 test:
   override:
-    #- alias cucumber='bundle exec cucumber'
     - rake

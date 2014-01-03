@@ -9,7 +9,7 @@ FEATURE_FILES = Dir.glob(Dir.pwd + "/features/*.feature")
 
 require 'bundler'
 Bundler.setup(:test)
-#require 'rubygems'
+
 require 'cucumber'
 require 'cucumber/rake/task'
 
